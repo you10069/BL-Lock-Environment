@@ -527,3 +527,13 @@ config/bl_lock.conf 按以下区域组织：
 - verify_props.sh验证脚本；
 - summary.sh安装结果统计；
 - customize.sh安装界面流程。
+
+
+# Phase 3 Revision 8
+
+本阶段增加：
+
+- 环境检查脚本；
+- 卸载恢复日志；
+- 恢复流程保护；
+- 安装前置检查。
