@@ -495,3 +495,13 @@ config/bl_lock.conf 按以下区域组织：
 - Vendor AVB 属性说明；
 - Security 属性说明完善；
 - 配置文件分区结构说明。
+
+
+# Phase 3 Revision 5
+
+本阶段增加：
+
+- 安装检测分类显示；
+- apply.log时间记录；
+- backup.log备份记录；
+- 配置分类与输出结构关联。

@@ -4,9 +4,7 @@ CONF="$1"
 
 get_desc()
 {
-    local file="$1"
-    local key="$2"
-    awk -v key="$key" '
+    awk -v key="$1" '
     $0 ~ "^"key"=" {
         found=1
         next
@@ -21,19 +19,43 @@ get_desc()
     found && !/^#/ {
         exit
     }
-    ' "$file"
+    ' "$2"
 }
+
+get_section()
+{
+    awk '
+    /^#################################################$/ {
+        getline
+        if ($0 ~ /^# [0-9]+\./) {
+            sub(/^# /, "")
+            print
+        }
+    }
+    ' "$1"
+}
+
+CURRENT_SECTION=""
 
 while IFS= read -r line
 do
     case "$line" in
-        ""|\#*) continue ;;
+        "" ) continue ;;
+        \#\ \[0-9\].* )
+            CURRENT_SECTION="${line#\# }"
+            echo "================================"
+            echo "$CURRENT_SECTION"
+            echo "================================"
+            echo
+            continue
+            ;;
+        \#*) continue ;;
     esac
 
     KEY="${line%%=*}"
     VALUE="${line#*=}"
 
-    DESC=$(get_desc "$CONF" "$KEY")
+    DESC=$(get_desc "$KEY" "$CONF")
     CURRENT=$(resetprop "$KEY" 2>/dev/null)
 
     if [ -z "$CURRENT" ]; then
