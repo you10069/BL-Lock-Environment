@@ -1,42 +1,25 @@
 #!/system/bin/sh
-
 CONF="$1"
 LOG="$2"
+ENGINE_DIR="$(dirname "$0")/lib"
+. "$ENGINE_DIR/prop_backend.sh"
+. "$ENGINE_DIR/property_engine.sh"
+prop_init
 
-{
-echo "Time: $(date '+%Y-%m-%d %H:%M:%S')"
-echo
-} >> "$LOG"
-
-while IFS= read -r line
-do
-    case "$line" in
-        ""|\#*) continue ;;
-    esac
-
-    KEY="${line%%=*}"
-    VALUE="${line#*=}"
-
-    CURRENT=$(resetprop "$KEY" 2>/dev/null)
-
-    {
-        echo "$KEY"
-        echo "原值：${CURRENT:-<not found>}"
-        echo "目标值：$VALUE"
-    } >> "$LOG"
-
-    if [ "$CURRENT" = "$VALUE" ]; then
-        echo "结果：KEEP" >> "$LOG"
-    else
-        resetprop "$KEY" "$VALUE"
-        AFTER=$(resetprop "$KEY" 2>/dev/null)
-        if [ "$AFTER" = "$VALUE" ]; then
-            echo "结果：SUCCESS" >> "$LOG"
-        else
-            echo "结果：FAILED" >> "$LOG"
-        fi
-    fi
-
-    echo >> "$LOG"
-
+echo "Time: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG"
+POLICY="VERIFY"
+while IFS= read -r line; do
+case "$line" in
+#策略:*) POLICY="${line#*：}";;
+""|#*) continue;;
+*)
+KEY="${line%%=*}"; VALUE="${line#*=}"
+case "$POLICY" in
+VERIFY) verify_property "$KEY" "$VALUE";;
+CREATE) create_property "$KEY" "$VALUE";;
+MATCH) :;;
+esac
+{ echo "$KEY"; echo "策略：$POLICY"; echo "动作：$ACTION"; echo; } >> "$LOG"
+POLICY="VERIFY";;
+esac
 done < "$CONF"
