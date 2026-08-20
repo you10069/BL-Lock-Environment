@@ -466,3 +466,22 @@ Android读取结果。
 # Phase 3 Revision 2
 
 增加属性检测说明解析、修改结果验证、备份恢复安全判断。
+
+
+# 配置文件分类结构
+
+config/bl_lock.conf 按以下区域组织：
+
+1. Bootloader / AVB Environment
+
+2. Build Identity
+
+3. Security Environment
+
+4. OEM Unlock State
+
+5. Warranty / Tamper State
+
+6. OEM Specific
+
+配置文件中每个属性后紧跟中文说明。
