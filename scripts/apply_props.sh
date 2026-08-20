@@ -3,8 +3,6 @@
 CONF="$1"
 LOG="$2"
 
-[ -z "$CONF" ] && exit 1
-
 while IFS= read -r line
 do
     case "$line" in
@@ -17,7 +15,7 @@ do
     CURRENT=$(resetprop "$KEY" 2>/dev/null)
 
     if [ "$CURRENT" = "$VALUE" ]; then
-        echo "$KEY|KEEP|$CURRENT|$VALUE" >> "$LOG"
+        echo "$KEY KEEP $CURRENT" >> "$LOG"
         continue
     fi
 
@@ -25,10 +23,6 @@ do
 
     AFTER=$(resetprop "$KEY" 2>/dev/null)
 
-    if [ "$AFTER" = "$VALUE" ]; then
-        echo "$KEY|MODIFY|$CURRENT|$VALUE" >> "$LOG"
-    else
-        echo "$KEY|FAILED|$CURRENT|$VALUE" >> "$LOG"
-    fi
+    echo "$KEY $CURRENT -> $VALUE ($AFTER)" >> "$LOG"
 
 done < "$CONF"

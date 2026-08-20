@@ -12,8 +12,8 @@ do
     esac
 
     KEY="${line%%=*}"
-    CURRENT=$(resetprop "$KEY" 2>/dev/null)
+    VALUE=$(resetprop "$KEY" 2>/dev/null)
 
-    echo "$KEY=$CURRENT" >> "$BACKUP"
+    echo "$KEY=$VALUE" >> "$BACKUP"
 
 done < "$CONF"
