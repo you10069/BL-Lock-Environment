@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib/config_parser.sh"
 
 CONF="$1"
 LOG="$2"

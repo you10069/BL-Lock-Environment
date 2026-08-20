@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib/config_parser.sh"
 MODPATH=${MODPATH:-${0%/*}/..}
 CONF="$1"
 . "$MODPATH/scripts/lib/prop_backend.sh"

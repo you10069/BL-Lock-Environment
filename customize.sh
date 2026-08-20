@@ -3,8 +3,8 @@
 ui_print "================================"
 ui_print " BL Lock Environment"
 ui_print " Universal Bootloader Locked Environment"
-ui_print " Version 1.0"
-ui_print " Phase 4"
+ui_print " Version 2.2"
+ui_print " Phase v2"
 ui_print "================================"
 
 DATA=/data/adb/bl_lock_env
