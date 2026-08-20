@@ -461,3 +461,8 @@ Android读取结果。
 -   硬件Fuse状态
 -   TEE状态
 -   Key Attestation结果
+
+
+# Phase 3 Revision 2
+
+增加属性检测说明解析、修改结果验证、备份恢复安全判断。

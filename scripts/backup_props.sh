@@ -14,6 +14,10 @@ do
     KEY="${line%%=*}"
     VALUE=$(resetprop "$KEY" 2>/dev/null)
 
-    echo "$KEY=$VALUE" >> "$BACKUP"
+    if [ -z "$VALUE" ]; then
+        echo "$KEY=<not_found>" >> "$BACKUP"
+    else
+        echo "$KEY=$VALUE" >> "$BACKUP"
+    fi
 
 done < "$CONF"
