@@ -1,6 +1,6 @@
 id=bl_lock_env
 name=BL Lock Environment
-version=2.0
-versionCode=2000
+version=2.1
+versionCode=2100
 author=BL Lock Env
 description=Universal Bootloader Locked Environment Property Module

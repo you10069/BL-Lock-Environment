@@ -2,15 +2,14 @@
 MODPATH=${MODPATH:-${0%/*}/..}
 CONF="$1"
 . "$MODPATH/scripts/lib/prop_backend.sh"
-init_prop_backend
+init_prop_backend || exit 1
 
 while IFS= read -r line; do
-    case "$line" in
-        ''|\#*) continue ;;
-    esac
+    case "$line" in ''|\#*) continue;; esac
+    case "$line" in *"="*) ;; *) continue;; esac
     key="${line%%=*}"
     value="${line#*=}"
-    IFS= read -r strategy_line
+    IFS= read -r strategy_line || true
     strategy="${strategy_line#\#策略：}"
     case "$strategy" in
         VERIFY)
