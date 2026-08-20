@@ -517,3 +517,13 @@ config/bl_lock.conf 按以下区域组织：
 
 模块包内仅保留空日志目录占位文件，
 实际日志文件由模块运行后生成。
+
+
+# Phase 3 Revision 7
+
+本阶段增加：
+
+- 安装阶段五步流程；
+- verify_props.sh验证脚本；
+- summary.sh安装结果统计；
+- customize.sh安装界面流程。
