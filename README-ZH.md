@@ -485,3 +485,13 @@ config/bl_lock.conf 按以下区域组织：
 6. OEM Specific
 
 配置文件中每个属性后紧跟中文说明。
+
+
+# Phase 3 Revision 4
+
+本阶段增加：
+
+- Bootloader / AVB 属性分类完善；
+- Vendor AVB 属性说明；
+- Security 属性说明完善；
+- 配置文件分区结构说明。
