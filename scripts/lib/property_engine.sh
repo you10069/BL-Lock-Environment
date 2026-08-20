@@ -1,37 +1,43 @@
 #!/system/bin/sh
 
-verify_property()
-{
-    KEY="$1"; TARGET="$2"
-    CURRENT=$(prop_get "$KEY")
-    if [ "$CURRENT" = "$TARGET" ]; then
-        ACTION="KEEP"
-    elif [ -n "$CURRENT" ]; then
-        prop_set "$KEY" "$TARGET"
-        ACTION="MODIFY"
-    else
+verify_property(){
+    key="$1"
+    target="$2"
+    current="$(prop_get "$key")"
+    if [ -z "$current" ]; then
         ACTION="SKIP"
-    fi
-}
-
-create_property()
-{
-    KEY="$1"; TARGET="$2"
-    CURRENT=$(prop_get "$KEY")
-    if [ -n "$CURRENT" ]; then
+    elif [ "$current" = "$target" ]; then
         ACTION="KEEP"
     else
-        prop_set "$KEY" "$TARGET"
-        ACTION="CREATE"
+        prop_set "$key" "$target"
+        ACTION="MODIFY"
     fi
 }
 
-match_property()
-{
-    KEY="$1"; MATCH="$2"; TARGET="$3"
-    CURRENT=$(prop_get "$KEY")
-    case "$CURRENT" in
-        *"$MATCH"*) prop_set "$KEY" "$TARGET"; ACTION="MODIFY" ;;
-        *) ACTION="KEEP" ;;
+create_property(){
+    key="$1"
+    target="$2"
+    current="$(prop_get "$key")"
+    if [ -z "$current" ]; then
+        prop_set "$key" "$target"
+        ACTION="CREATE"
+    else
+        ACTION="KEEP"
+    fi
+}
+
+match_property(){
+    key="$1"
+    match="$2"
+    target="$3"
+    current="$(prop_get "$key")"
+    case "$current" in
+        *"$match"*)
+            prop_set "$key" "$target"
+            ACTION="MODIFY"
+            ;;
+        *)
+            ACTION="KEEP"
+            ;;
     esac
 }
