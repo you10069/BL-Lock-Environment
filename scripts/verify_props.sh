@@ -1,34 +1,30 @@
 #!/system/bin/sh
-
+MODPATH=${MODPATH:-${0%/*}/..}
 CONF="$1"
-LOG="$2"
+. "$MODPATH/scripts/lib/prop_backend.sh"
+init_prop_backend
 
-mkdir -p "$(dirname "$LOG")"
-
-echo "Time: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG"
-echo >> "$LOG"
-
-while IFS= read -r line
-do
+while IFS= read -r line; do
     case "$line" in
-        ""|\#*) continue ;;
+        ''|\#*) continue ;;
     esac
-
-    KEY="${line%%=*}"
-    VALUE="${line#*=}"
-
-    CURRENT=$(resetprop "$KEY" 2>/dev/null)
-
-    echo "$KEY" >> "$LOG"
-    echo "目标值：$VALUE" >> "$LOG"
-    echo "当前值：${CURRENT:-<not found>}" >> "$LOG"
-
-    if [ "$CURRENT" = "$VALUE" ]; then
-        echo "结果：PASS" >> "$LOG"
-    else
-        echo "结果：FAILED" >> "$LOG"
-    fi
-
-    echo >> "$LOG"
-
+    key="${line%%=*}"
+    value="${line#*=}"
+    IFS= read -r strategy_line
+    strategy="${strategy_line#\#策略：}"
+    case "$strategy" in
+        VERIFY)
+            current="$(prop_get "$key")"
+            [ "$current" = "$value" ] && echo "PASS VERIFY $key" || echo "FAIL VERIFY $key current=$current target=$value"
+            ;;
+        CREATE)
+            current="$(prop_get "$key")"
+            [ -n "$current" ] && echo "PASS CREATE $key" || echo "FAIL CREATE $key missing"
+            ;;
+        MATCH)
+            match="${value%%=>*}"
+            current="$(prop_get "$key")"
+            case "$current" in *"$match"*) echo "PASS MATCH $key";; *) echo "FAIL MATCH $key current=$current";; esac
+            ;;
+    esac
 done < "$CONF"

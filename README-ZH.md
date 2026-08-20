@@ -547,3 +547,32 @@ config/bl_lock.conf 按以下区域组织：
 - Magisk / KernelSU / APatch环境识别；
 - Property操作抽象层；
 - 后续兼容扩展基础。
+
+# v2 Phase 1 Property Engine
+
+v2 Phase 1采用策略驱动属性处理：
+
+VERIFY：验证当前属性状态，当前值不符合目标值时修改。
+
+CREATE：仅在属性不存在时创建，已有属性保持。
+
+MATCH：匹配当前属性特征值后执行替换。
+
+处理流程：
+
+配置文件 → 策略解析 → Property Engine → Backend → Property修改
+
+## v2 Phase1 Property Engine
+
+模块属性处理采用策略驱动方式：
+
+VERIFY：验证当前属性状态，目标值不一致时修改，缺失属性跳过。
+
+CREATE：仅在属性不存在时创建，已有属性保持。
+
+MATCH：匹配当前属性特征值，符合条件时执行替换。
+
+属性处理流程：
+
+配置文件 → 策略解析 → Property Engine → Property Backend → resetprop后端
+

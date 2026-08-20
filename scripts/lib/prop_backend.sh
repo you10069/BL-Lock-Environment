@@ -13,17 +13,21 @@ init_prop_backend(){
 }
 
 prop_get(){
+    [ -z "$PROP_BACKEND" ] && return 1
     "$PROP_BACKEND" "$1" 2>/dev/null
 }
 
 prop_set(){
+    [ -z "$PROP_BACKEND" ] && return 1
     "$PROP_BACKEND" -n "$1" "$2"
 }
 
 prop_delete(){
+    [ -z "$PROP_BACKEND" ] && return 1
     "$PROP_BACKEND" -d "$1"
 }
 
 prop_clear(){
+    [ -z "$PROP_BACKEND" ] && return 1
     "$PROP_BACKEND" -c
 }
