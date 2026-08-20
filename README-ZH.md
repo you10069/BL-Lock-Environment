@@ -537,3 +537,13 @@ config/bl_lock.conf 按以下区域组织：
 - 卸载恢复日志；
 - 恢复流程保护；
 - 安装前置检查。
+
+
+# Phase 4 Revision 1
+
+本阶段增加：
+
+- Root环境检测；
+- Magisk / KernelSU / APatch环境识别；
+- Property操作抽象层；
+- 后续兼容扩展基础。
