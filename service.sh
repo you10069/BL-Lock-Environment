@@ -1,5 +1,13 @@
 #!/system/bin/sh
+
 MODDIR=${0%/*}
-LOG=/data/adb/bl_lock_env.log
-echo "BL Lock Environment started" >> "$LOG"
-# Property application will be added after source verification pass.
+DATA=/data/adb/bl_lock_env
+LOG=$DATA/apply.log
+
+mkdir -p "$DATA"
+
+CONF="$MODDIR/config/bl_lock.conf"
+
+sh "$MODDIR/scripts/backup_props.sh" "$CONF" "$DATA/backup.conf"
+
+sh "$MODDIR/scripts/apply_props.sh" "$CONF" "$LOG"
